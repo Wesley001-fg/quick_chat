@@ -65,21 +65,13 @@ public class message {
     public int returnTotalMessages(int userMessageCounter) {
         return userMessageCounter;
     }
+    
 }
+    
 
-/*public class message {
-     public static void storeMessage(String[] storedMessages) {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    try (FileWriter writer = new FileWriter("StoredMessages.json")) {
-        gson.toJson(storedMessages, writer);
-        System.out.println("Messages stored successfully.");
-    } catch (IOException e) {
-        System.out.println("Error storing messages: " + e.getMessage());
-    }
-}
 
-}}*/
+
 
 
 

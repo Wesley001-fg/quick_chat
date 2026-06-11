@@ -105,9 +105,12 @@ public class QuickChat {
                     String userMessage = sc.nextLine();
                     messages[i] = userMessage;// Backup of all entries
                     
+                    //MESSAGE HASH
                     String messageID = message.checkMessageID();
                     System.out.println("Message ID: " + messageID);
-                    
+                    System.out.println("Message hash: " + messageID.substring(0, 2) + ":"+ (i+1) +" "+ userMessage.substring(0));
+   
+             
                     System.out.println("Do you want to Send, Store or Disregard?");
                     x = sc.nextLine();
                     
