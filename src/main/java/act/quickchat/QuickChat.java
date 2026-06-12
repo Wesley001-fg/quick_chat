@@ -1,6 +1,13 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
+/* Reference
+GeeksforGeeks. 2026. Arrays in Java. [Online]. Available at: https://www.geeksforgeeks.org/java/arrays-in-java/ [Accessed 24 May 2026].
+W3Schools. n.d. Java String substring() Method. [Online]. Available at: https://www.w3schools.com/java/ref_string_substring.asp [Accessed 1 May 2026].
+GeeksforGeeks. 2024. Java String length() Method with Examples. [Online]. Available at: https://www.geeksforgeeks.org/java/java-string-length-method-with-examples/ [Accessed 1 June 2026].
+Farrell, J. 2018. Programming logic and design. 10th ed. Boston: Cengage Learning
+Google. 2026. Gemini response to prompt about Java programming. Generated using Google Gemini on 5 June 2026.
+*/
 
 package act.quickchat;
 import java.util.Scanner;
@@ -19,6 +26,8 @@ public class QuickChat {
         String[] storedMessages = new String[100];
         String[] sentMessages = new String[100]; 
         String[] disregardedMessages = new String[100];
+        String[] storedMessageHashes = new String[100];
+        String [] messageIDs = new String[100];
         String cellnum;
         int i;
         String recipientNum = null;
@@ -27,6 +36,8 @@ public class QuickChat {
         // Track the current exact index counts for arrays
         int sentCount = 0;
         int storedCount = 0;
+        int disregardedCount = 0;
+        int hashCount = 0;
         
         // REGISTRATION
         while (true) {
@@ -93,7 +104,6 @@ public class QuickChat {
 
                 if (!message.checkRecipientCell(recipientNum).equals("+27")) {
                     System.out.println("Invalid number. Must start with +27");
-                   // continue; // Skip back to menu if number is wrong
                 }
                 
                 System.out.println("How many messages would you like to send?");
@@ -103,26 +113,39 @@ public class QuickChat {
                 for (i = 0; i < userMessageCounter; i++) {
                     System.out.println("Type message: ");
                     String userMessage = sc.nextLine();
-                    messages[i] = userMessage;// Backup of all entries
+                    
+                    //VALIDATES USERS INPUT IS NO MORE THAN 250 CHAR LONG
+                    while (userMessage.length() > 250) {
+                    System.out.println("Message exceeds 250 characters, please reduce the size");
+                    System.out.println("Type message again: ");
+                    userMessage = sc.nextLine(); // Overwrite with new input
+                    }
+                       messages[i] = userMessage;// populates userInput in an array
                     
                     //MESSAGE HASH
                     String messageID = message.checkMessageID();
                     System.out.println("Message ID: " + messageID);
-                    System.out.println("Message hash: " + messageID.substring(0, 2) + ":"+ (i+1) +" "+ userMessage.substring(0));
-   
-             
+                    // Grab only the first word using index 
+                    String firstWord = userMessage.split(" ")[0];
+                    System.out.println("Message hash: " + messageID.substring(0, 2) + ":"+ (i+1) +" "+ firstWord);//(Google Gemini, 2026)
+                    
                     System.out.println("Do you want to Send, Store or Disregard?");
                     x = sc.nextLine();
                     
                     System.out.println(message.sentMessage(x));
                     System.out.println(message.printMessage(userMessage));
-
+                    
                     if (x.equals("Send")) {
                         sentMessages[sentCount] = userMessage;
                         sentCount++;
                     } else if (x.equals("Store")) {
+                        messageIDs[storedCount] = messageID;
+                        storedMessageHashes[storedCount] = messageID.substring(0, 2); 
                         storedMessages[storedCount] = userMessage;
                         storedCount++;
+                    } else if (x.equals("Disregard")){
+                        disregardedMessages[disregardedCount] = userMessage;
+                        disregardedCount++;
                     }
                 }
                 
@@ -149,71 +172,34 @@ public class QuickChat {
                     }
                 }
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
-
             } else if (userOption == 3) {
                 break;
                 
             } else if (userOption == 4) {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
                 System.out.println("STORED MESSAGES");
+                
                 if (storedCount == 0) {
                     System.out.println("No messages stored yet.");
                 } else {
                     for (int k = 0; k < storedCount; k++) {
-                        System.out.println((k + 1) + ") " + storedMessages[k]);
+                // Print the hash prefix alongside the message so the user knows what to type to delete it
+                System.out.println((k + 1) + ") [Hash: " + storedMessageHashes[k] + "] " + storedMessages[k]);
                     }
                 }
+                
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
+                System.out.println("DISREGARDED MESSAGES");
+                for (int d = 0; d < disregardedCount; d++){
+                    System.out.println((d + 1) +") " + disregardedMessages[d]);
+                }
+                
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
+                System.out.println("Delete a message using the hash");
+                String deleteHash = sc.nextLine();
+                
+               for (int hashIndex = 0; hashIndex < storedCount; hashIndex++) {
+            if (storedMessageHashes[hashIndex].equals(deleteHash)) {
+                System.out.println("Message with hash " + deleteHash + " has been deleted");
+                }}
             }}}}
-
-/*
-    
-        int totalSent = 0;
-        int z;
-        String[] sentMessages = new String[100];
-        for (i = 0; i < userMessageCounter; i++) {
-
-            System.out.println("Type message: ");
-            messages[i] = sc.nextLine();
-            String messageID = message.checkMessageID();//calling our method that generates digits
-
-            System.out.println("Message ID: " + messageID);
-            System.out.println("Do you want to Send, Store or Disregard?");
-            x = sc.nextLine();
-            
-            System.out.println(message.sentMessage(x));
-             System.out.println(message.printMessage(messages[i]));
-            totalSent++;
-
-            if (x.equals("Store")) {
-                storedMessages[i] = messages[i];
-                message.storeMessage(storedMessages);//calling our method that will store out messages in a Json file
-                System.out.println("Stored");
-            }
-    
-        }
-        
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println("Total sent messages:" + totalSent);
-        System.out.println(messages[i]);
-
-    } else if (userOption == 2) {
-        System.out.println("Coming soon");
-        /*String[] sentMessages = new String[100];
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println("STORED MESSAGES");
-        System.out.println("Sender:" +" "+ cellnum);
-        System.out.println("Receipient:" +" "+ recipientNum);
-        message.storeMessage(storedMessages);
-        System.out.println(message.sentMessage(x));
-        
-        for (String stored : storedMessages) {
-            if (stored != null) {
-                System.out.println(stored);
-            }
-        }
-
-    } else if (userOption == 3) {
-        break;
-    }}}}*/
-

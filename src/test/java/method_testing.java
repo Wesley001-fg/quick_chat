@@ -2,6 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
+/*Reference
+PROG5121 Unit Testing Getting Started
+https://www.youtube.com/watch?v=A_LxQGdvkOk&list=PPSV
+Emeris SoCS YouTube Channel
+https://www.youtube.com/@Emeris_SoCS
+*/
 
 import act.quickchat.message;
 import org.junit.jupiter.api.AfterEach;
